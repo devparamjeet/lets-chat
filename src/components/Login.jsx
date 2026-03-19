@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 const Login = () => {
+
+    let redirect = useNavigate();
 
     const [login, setLogin] = useState({
         username: "",
@@ -30,7 +32,15 @@ const Login = () => {
         let res = await resp.json()
         // console.log(res)
 
-        resp.status === 200 || res.status === 201 ? toast.success(res.message) : toast.error(res.error)
+        if (resp.status === 200 || res.status === 201) {
+            localStorage.setItem("user_id", JSON.stringify(res.user._id))
+            toast.success(res.message)
+            setTimeout(() => {
+                redirect("/user")
+            }, 1000)
+        }
+
+        else toast.error(res.error)
 
     }
 

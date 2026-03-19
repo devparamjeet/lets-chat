@@ -2,6 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import MainOutlet from "./components/MainOutlet";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import UserOutlet from "./components/UserOutlet";
+import UserDashboard from "./pages/UserDashboard";
+import ChatScreen from "./components/ChatScreen";
 
 const router = createBrowserRouter([
     {
@@ -12,6 +15,15 @@ const router = createBrowserRouter([
             { index: true, element: <Login /> },
             { path: "/login", element: <Login /> },
             { path: "/signup", element: <Signup /> }
+        ]
+    },
+    {
+        path: "/user",
+        element: <UserOutlet />,
+        children: [
+            { index: true, element: <UserDashboard/> },
+            { path: "chat", element: <ChatScreen/> },
+            { path: "setting", element: <>Setting Page</> },
         ]
     }
 ])
