@@ -79,7 +79,7 @@ const Sidebar = ({ user }) => {
                     <button onClick={() => { redirect("/user/profile") }} className='flex gap-2 my-2 border w-full p-2 rounded-sm'>
                         <User2Icon /> <span>Profile</span>
                     </button>
-                    <button className='flex gap-2 my-2 border w-full p-2 rounded-sm'>
+                    <button onClick={()=>{redirect('/')}} className='flex gap-2 my-2 border w-full p-2 rounded-sm'>
                         <LogOutIcon /> <span>LogOut</span>
                     </button>
                 </div>
