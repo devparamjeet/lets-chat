@@ -5,6 +5,7 @@ import Signup from "./components/Signup";
 import UserOutlet from "./components/UserOutlet";
 import UserDashboard from "./pages/UserDashboard";
 import ChatScreen from "./components/ChatScreen";
+import UserProfile from "./pages/UserProfile";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <UserDashboard/> },
             { path: "chat", element: <ChatScreen/> },
+            { path: "profile", element: <UserProfile/> },
             { path: "setting", element: <>Setting Page</> },
         ]
     }
