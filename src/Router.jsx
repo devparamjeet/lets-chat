@@ -6,6 +6,8 @@ import UserOutlet from "./components/UserOutlet";
 import UserDashboard from "./pages/UserDashboard";
 import ChatScreen from "./components/ChatScreen";
 import UserProfile from "./pages/UserProfile";
+import ForgetPassword from "./pages/ForgetPassword";
+import ChangePassword from "./pages/ChangePassword";
 
 const router = createBrowserRouter([
     {
@@ -14,8 +16,9 @@ const router = createBrowserRouter([
         errorElement: <>Error Page</>,
         children: [
             { index: true, element: <Login /> },
-            { path: "/login", element: <Login /> },
-            { path: "/signup", element: <Signup /> }
+            { path: "login", element: <Login /> },
+            { path: "signup", element: <Signup /> },
+            { path: "forget-password", element: <ForgetPassword /> },
         ]
     },
     {
@@ -25,7 +28,7 @@ const router = createBrowserRouter([
             { index: true, element: <UserDashboard/> },
             { path: "chat", element: <ChatScreen/> },
             { path: "profile", element: <UserProfile/> },
-            { path: "setting", element: <>Setting Page</> },
+            { path: "change-password", element: <ChangePassword/> },
         ]
     }
 ])

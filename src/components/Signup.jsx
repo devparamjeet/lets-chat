@@ -40,6 +40,14 @@ const Signup = () => {
         let res = await resp.json()
         console.log(res);
 
+        if(resp.status === 200 || resp.status === 201){
+            toast.success('Account Created Successfully')
+            setTimeout(()=>{
+                redirect('/user')
+            },1000)
+        }
+        else toast.error("Try Again!")
+
     }
 
     return (
