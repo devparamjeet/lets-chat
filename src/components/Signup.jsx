@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import Loading from './Loading'
 
 const Signup = () => {
 
@@ -12,47 +13,52 @@ const Signup = () => {
         cpass: ""
     })
 
+    const [loading, setLoading] = useState(false)
+
     let handleChange = (event) => {
         setSignup({ ...signup, [event.target.name]: event.target.value })
     }
 
     let handleSignup = async () => {
+        setLoading(true)
 
         let newData = {
-            email : signup.uemail,
-            name : signup.uname,
-            password : signup.pass,
-            phone : signup.umobile
+            email: signup.uemail,
+            name: signup.uname,
+            password: signup.pass,
+            phone: signup.umobile
         }
         console.log(newData);
-        
-        
+
+
         let URL = "https://api.skillsvarz.com/api/users"
-        let resp = await fetch(URL,{
-            method : "POST",
-            headers : {
-                'Content-Type' : 'application/json'
+        let resp = await fetch(URL, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
             },
-            body : JSON.stringify(newData)
+            body: JSON.stringify(newData)
         })
 
         console.log(resp);
         let res = await resp.json()
         console.log(res);
 
-        if(resp.status === 200 || resp.status === 201){
+        if (resp.status === 200 || resp.status === 201) {
             toast.success('Account Created Successfully')
-            setTimeout(()=>{
+            setTimeout(() => {
                 redirect('/user')
-            },1000)
+            }, 1000)
         }
         else toast.error("Try Again!")
 
+        setLoading(false)
     }
 
     return (
         <>
-            <div className="min-h-screen flex items-center justify-center bg-gray-100">
+
+            {loading ? <Loading /> : <div className="min-h-screen flex items-center justify-center bg-gray-100">
                 <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
 
                     <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
@@ -158,7 +164,8 @@ const Signup = () => {
                     </p>
 
                 </div>
-            </div>
+            </div>}
+
         </>
 
     )
