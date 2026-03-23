@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Loading from './Loading';
+import { EyeClosed, EyeIcon } from 'lucide-react';
 
 const Login = () => {
 
@@ -13,6 +14,8 @@ const Login = () => {
     })
 
     const [loading, setLoading] = useState(false)
+
+    const [isHide, setIsHide] = useState(true)
 
 
 
@@ -51,6 +54,16 @@ const Login = () => {
 
     }
 
+    let handlePass = () =>{
+        
+        if(isHide){
+            setIsHide(false)
+        }
+        else{
+            setIsHide(true)
+        }
+    }
+
     // console.log(login)
 
     return (
@@ -85,7 +98,7 @@ const Login = () => {
                             Password
                         </label>
                         <input
-                            type="password"
+                            type={isHide ? "password" :"text"}
                             id="password"
                             onChange={(event) => {
                                 setLogin({ ...login, password: event.target.value });
@@ -93,6 +106,8 @@ const Login = () => {
                             placeholder="Enter your password..."
                             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
                         />
+
+                        {isHide ? <EyeIcon onClick={handlePass} /> : <EyeClosed onClick={handlePass} />}
                     </div>
                     <Link to="/forget-password">Forget Password ?</Link>
 
