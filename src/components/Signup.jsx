@@ -49,7 +49,7 @@ const Signup = () => {
         if (resp.status === 200 || resp.status === 201) {
             toast.success('Account Created Successfully')
             setTimeout(() => {
-                redirect('/user')
+                redirect('/login')
             }, 1000)
         }
         else toast.error("Try Again!")

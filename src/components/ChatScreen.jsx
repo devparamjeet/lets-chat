@@ -39,7 +39,7 @@ const ChatScreen = () => {
 
   let you = (value) => {
     return (
-      <div className="flex items-end gap-2">
+      <div className="flex items-end gap-2" >
         <div className="w-8 h-8 rounded-full overflow-hidden">
           <img src="https://ui-avatars.com/api/?name=Friend" alt="" />
         </div>
@@ -54,7 +54,7 @@ const ChatScreen = () => {
 
   let me = (value) => {
     return (
-      <div className="flex items-end justify-end gap-2">
+      <div className="flex items-end justify-end gap-2" >
         <div className="bg-blue-600 px-3 py-2 rounded-lg max-w-xs text-right">
           <p className="text-sm">{value.message}</p>
           <span className="text-[10px] text-gray-200">{value.time}</span>
@@ -97,11 +97,11 @@ const ChatScreen = () => {
       {/* 💬 Chat Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
 
-        {chats.map((value) => {
+        {chats.map((value, index) => {
           return (
-            <>
+            <div key={index}>
               {value.role === "you" ? you(value) : me(value)}
-            </>
+            </div>
           )
         })}
 

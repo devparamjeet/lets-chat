@@ -1,12 +1,17 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const RecentChatBox = ({ name, email }) => {
+const RecentChatBox = ({ name, email , id, newChat}) => {
 
     let redirect = useNavigate()
+    // console.log(id);
+    
 
     return (
-        <div onClick={()=>{redirect('/user/chat')}} className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition">
+        <div onClick={()=>{
+            redirect('/user/chat')
+            newChat(id);
+            }} className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition">
 
             {/* Avatar */}
             <div className="w-10 h-10 rounded-full overflow-hidden">

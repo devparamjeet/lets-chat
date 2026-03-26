@@ -40,8 +40,9 @@ const Login = () => {
         let res = await resp.json()
         // console.log(res)
 
-        if (resp.status === 200 || res.status === 201) {
+        if (resp.status === 200 || resp.status === 201) {
             localStorage.setItem("user_id", JSON.stringify(res.user._id))
+            localStorage.setItem("user_token", JSON.stringify(res.token))
             toast.success(res.message)
             setTimeout(() => {
                 redirect("/user")

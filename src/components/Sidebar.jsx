@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import RecentChatBox from './RecentChatBox'
 import { LogOutIcon, MessageCircleCheck, MoveLeft, MoveLeftIcon, Settings, User2Icon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -10,32 +10,64 @@ const Sidebar = ({ user }) => {
     const [isEnabled, setIsEnabled] = useState(true)
     const [search, setSearch] = useState("")
     const [searchData, setSearchData] = useState([])
+    const [chats, setChats] = useState([])
 
 
-    let handleSearch = async (event) =>{
+    useEffect(() => {
+        let user_token = JSON.parse(localStorage.getItem('user_token'))
+        let url = "https://api.skillsvarz.com/api/chats"
+        let fetchChats = async () => {
+            let resp = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user_token}`
+                }
+            })
+            let res = await resp.json()
+            // console.log(res);
+            setChats(res)
+        }
+        fetchChats()
+    }, [])
+
+    let newChat = async (userId) => {
+        let url = "https://api.skillsvarz.com/api/chats"
+        let user_token = JSON.parse(localStorage.getItem('user_token'))
+        let resp = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user_token}` //my token
+            },
+
+            // saamne waale ki user id
+            body: JSON.stringify({ userId: userId })
+        })
+        let res = await resp.json()
+        // console.log(res);
+    }
+
+    let handleSearch = async (event) => {
         setSearch(event.target.value);
-        
+
         // console.log(search);
-        
-        let url = 'https://api.skillsvarz.com/api/user/search?query='+ event.target.value
+
+        let url = 'https://api.skillsvarz.com/api/user/search?query=' + event.target.value
         let resp = await fetch(url)
         let res = await resp.json()
 
-        if(resp.status === 400){
+        if (resp.status === 400) {
             setSearchData([])
         }
         else setSearchData(res);
         // console.log(res);
-        
-        
+
+
     }
 
     return (
-
         <>
-
-        
-
             {isEnabled ? <div className="w-[20%] h-screen bg-[#111827] text-white flex flex-col">
 
                 {/* 🔍 Search Bar */}
@@ -44,19 +76,37 @@ const Sidebar = ({ user }) => {
                         type="search"
                         placeholder="Search chats..."
                         value={search}
-                        onChange={(event)=>{handleSearch(event)}}
+                        onChange={(event) => { handleSearch(event) }}
                         className="w-full px-3 py-2 rounded-lg bg-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
                 {/* 💬 Recent Chats */}
                 <div className="flex-1 overflow-y-auto p-2">
-                    <h2 className="text-gray-400 text-sm px-2 mb-2">Recent Chats</h2>
 
-                    {searchData.length === 0 ? <span>No Recent Chats..</span> : searchData.map((value, index)=>{
-                        return <RecentChatBox name={value.name} email={value.email} />
-                    })}
-                   
+                    {/* <button onClick={callChats}>Call Chats</button> */}
+
+                    {search ? (
+                        <>
+                            <h2 className="text-gray-400 text-sm px-2 mb-2">Search results...</h2>
+                            {searchData.length === 0 ? <span>No Recent Chats..</span> : searchData.map((value, index) => {
+                                return <RecentChatBox key={index} name={value.name} email={value.email} id={value._id} newChat={newChat} />
+                            })}
+                        </>
+                    ) : (
+                        <>
+                            <h2 className="text-gray-400 text-sm px-2 mb-2">Recent Chats...</h2>
+                            {chats.length === 0 ? chats.map(()=>{
+                                return <></>
+                            }) : chats.map((value, index) => {
+                                let newuser = value.users.find((u)=>{
+                                    return u._id !== user._id
+                                })
+                                return <RecentChatBox key={index} name={newuser.name} email={newuser.email} />
+                            })}
+
+                        </>
+                    )}
                 </div>
 
                 {/* 👤 User Profile */}
@@ -93,7 +143,7 @@ const Sidebar = ({ user }) => {
                     <h2 className="text-gray-400 text-sm px-2 mb-4">Settings</h2>
 
 
-                    <button onClick={()=>{
+                    <button onClick={() => {
                         setIsEnabled(true)
                     }} className='flex gap-2 my-2 border w-full p-2 rounded-sm'>
                         <MessageCircleCheck /> <span>My Chats</span>
@@ -105,7 +155,7 @@ const Sidebar = ({ user }) => {
                     <button onClick={() => { redirect("/user/profile") }} className='flex gap-2 my-2 border w-full p-2 rounded-sm'>
                         <User2Icon /> <span>Profile</span>
                     </button>
-                    <button onClick={()=>{redirect('/')}} className='flex gap-2 my-2 border w-full p-2 rounded-sm'>
+                    <button onClick={() => { redirect('/') }} className='flex gap-2 my-2 border w-full p-2 rounded-sm'>
                         <LogOutIcon /> <span>LogOut</span>
                     </button>
                 </div>
