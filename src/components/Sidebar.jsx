@@ -8,10 +8,33 @@ const Sidebar = ({ user }) => {
     let redirect = useNavigate()
 
     const [isEnabled, setIsEnabled] = useState(true)
+    const [search, setSearch] = useState("")
+    const [searchData, setSearchData] = useState([])
+
+
+    let handleSearch = async (event) =>{
+        setSearch(event.target.value);
+        
+        // console.log(search);
+        
+        let url = 'https://api.skillsvarz.com/api/user/search?query='+ event.target.value
+        let resp = await fetch(url)
+        let res = await resp.json()
+
+        if(resp.status === 400){
+            setSearchData([])
+        }
+        else setSearchData(res);
+        // console.log(res);
+        
+        
+    }
 
     return (
 
         <>
+
+        
 
             {isEnabled ? <div className="w-[20%] h-screen bg-[#111827] text-white flex flex-col">
 
@@ -20,6 +43,8 @@ const Sidebar = ({ user }) => {
                     <input
                         type="search"
                         placeholder="Search chats..."
+                        value={search}
+                        onChange={(event)=>{handleSearch(event)}}
                         className="w-full px-3 py-2 rounded-lg bg-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
@@ -28,9 +53,10 @@ const Sidebar = ({ user }) => {
                 <div className="flex-1 overflow-y-auto p-2">
                     <h2 className="text-gray-400 text-sm px-2 mb-2">Recent Chats</h2>
 
-                    <RecentChatBox name="Rahul" />
-                    <RecentChatBox name="Aman" />
-                    <RecentChatBox name="Priya" />
+                    {searchData.length === 0 ? <span>No Recent Chats..</span> : searchData.map((value, index)=>{
+                        return <RecentChatBox name={value.name} email={value.email} />
+                    })}
+                   
                 </div>
 
                 {/* 👤 User Profile */}

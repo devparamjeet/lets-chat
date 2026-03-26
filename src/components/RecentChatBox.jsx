@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const RecentChatBox = ({ name }) => {
+const RecentChatBox = ({ name, email }) => {
 
     let redirect = useNavigate()
 
@@ -20,7 +20,7 @@ const RecentChatBox = ({ name }) => {
             <div className="flex-1">
                 <h2 className="text-sm font-medium">{name}</h2>
                 <p className="text-xs text-gray-400 truncate">
-                    Last message preview...
+                    {email}
                 </p>
             </div>
 
