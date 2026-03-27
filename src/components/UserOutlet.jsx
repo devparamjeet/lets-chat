@@ -9,6 +9,8 @@ const UserOutlet = () => {
     // console.log(user_id)
 
     const [user, setUser] = useState({})
+    const [chatId, setChatId] = useState("")
+    const [friendName, setFriendName] = useState("")
 
     useEffect(() => {
         let fetchUser = async () => {
@@ -20,10 +22,13 @@ const UserOutlet = () => {
         fetchUser()
     }, [user_id])
 
+    // console.log(chatId);
+    
+
     return (
         <div className='flex h-screen w-full'>
-            <Sidebar user={user} />
-            <Outlet context={{ user }} />
+            <Sidebar user={user} setFriendName={setFriendName} chatId={chatId} setChatId={setChatId}/>
+            <Outlet context={{ user , chatId, setChatId, friendName }} />
             <ToastContainer
                 position="top-right"
                 autoClose={5000}

@@ -3,7 +3,7 @@ import RecentChatBox from './RecentChatBox'
 import { LogOutIcon, MessageCircleCheck, MoveLeft, MoveLeftIcon, Settings, User2Icon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user, chatId, setChatId, setFriendName }) => {
 
     let redirect = useNavigate()
 
@@ -45,7 +45,7 @@ const Sidebar = ({ user }) => {
             body: JSON.stringify({ userId: userId })
         })
         let res = await resp.json()
-        // console.log(res);
+        return res._id
     }
 
     let handleSearch = async (event) => {
@@ -84,25 +84,23 @@ const Sidebar = ({ user }) => {
                 {/* 💬 Recent Chats */}
                 <div className="flex-1 overflow-y-auto p-2">
 
-                    {/* <button onClick={callChats}>Call Chats</button> */}
-
                     {search ? (
                         <>
                             <h2 className="text-gray-400 text-sm px-2 mb-2">Search results...</h2>
                             {searchData.length === 0 ? <span>No Recent Chats..</span> : searchData.map((value, index) => {
-                                return <RecentChatBox key={index} name={value.name} email={value.email} id={value._id} newChat={newChat} />
+                                return <RecentChatBox key={index} name={value.name} setFriendName={setFriendName} email={value.email} id={value._id} newChat={newChat} setChatId={setChatId} />
                             })}
                         </>
                     ) : (
                         <>
                             <h2 className="text-gray-400 text-sm px-2 mb-2">Recent Chats...</h2>
-                            {chats.length === 0 ? chats.map(()=>{
+                            {chats.length === 0 ? chats.map(() => {
                                 return <></>
                             }) : chats.map((value, index) => {
-                                let newuser = value.users.find((u)=>{
+                                let newuser = value.users.find((u) => {
                                     return u._id !== user._id
                                 })
-                                return <RecentChatBox key={index} name={newuser.name} email={newuser.email} />
+                                return <RecentChatBox key={index} name={newuser.name} setFriendName={setFriendName} email={newuser.email} setChatId={setChatId} value={value} />
                             })}
 
                         </>
